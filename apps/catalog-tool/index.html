@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>商家资料 · 邻里集</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/"><img src="/icon.svg" alt=""><span>邻里集<small>把附近的好服务，认真介绍给邻居。</small></span></a>
+    <span class="local-badge"><i></i> 本机资料准备</span>
+  </header>
+  <main>
+    <section class="intro">
+      <div><p class="eyebrow">从一家熟悉的小店开始</p><h1>把好店，带到邻里。</h1><p class="lede">填好商家、商品或服务资料，保存后就能用于后续导入。</p></div>
+      <div class="intro-art"><img src="/art/repair.png" alt=""><span>维修 · 生鲜 · 服装</span></div>
+    </section>
+    <p id="connection-error" class="message error" role="alert" hidden></p>
+    <div class="workspace">
+      <section class="panel editor" aria-labelledby="form-title">
+        <div class="panel-heading"><div><span class="step">01</span><h2 id="form-title">填写一条资料</h2></div><button type="button" id="reset" class="text-button">重新填写</button></div>
+        <form id="catalog-form">
+          <div class="grid two">
+            <label>业务类型<select name="business" id="business"><option value="service">维修服务</option><option value="farm">蔬菜生鲜</option><option value="clothes">服装商品</option></select></label>
+            <label>商家 / 服务商名称<input name="shop" required maxlength="50" autocomplete="organization" placeholder="填写真实店名或服务商名称"></label>
+          </div>
+          <label>商品或服务名称<input name="title" required maxlength="40" placeholder="例如：空调清洗上门服务"></label>
+          <label>一句话介绍<input name="subtitle" required maxlength="100" placeholder="服务特色、适用范围或商品特点"></label>
+          <label>详细说明<textarea name="description" required maxlength="1000" rows="4" placeholder="说明商品规格或服务内容、费用包含范围及需要提前确认的事项。"></textarea></label>
+          <div class="grid two">
+            <label>参考价格（元）<input name="price" inputmode="decimal" required pattern="[0-9]{1,6}(\.[0-9]{1,2})?" placeholder="例如：80.00"><span class="hint">0.01–100000 元，最多两位小数</span></label>
+            <label>计价单位<input name="unit" required maxlength="30" placeholder="例如：次、斤、件"></label>
+          </div>
+          <div class="grid two">
+            <label>城市<select name="city" id="city"><option>洛阳</option><option>郑州</option><option>杭州</option><option>成都</option></select></label>
+            <label>所在区县<input name="area" required maxlength="30" value="洛龙区" placeholder="填写实际经营或服务区县"></label>
+          </div>
+          <label>覆盖社区（可选）<input name="community" maxlength="30" list="community-options" placeholder="例如：石油社区、地矿社区；覆盖全市可填全洛阳"><datalist id="community-options"><option value="石油社区"><option value="地矿社区"><option value="全洛阳"></datalist><span class="hint">按实际服务范围填写，用于应用的社区筛选。</span></label>
+          <div class="grid two">
+            <label>联系手机号<input name="phone" required inputmode="tel" autocomplete="tel" pattern="1[3-9][0-9]{9}" maxlength="11" placeholder="商家授权提供的 11 位手机号"></label>
+            <label>展示配图<select name="art" id="art"></select><span class="hint">使用现有分类插画</span></label>
+          </div>
+          <div id="service-fields"><label>预计服务时长<input name="duration" required maxlength="50" placeholder="例如：约 1 小时，具体预约确认"></label></div>
+          <div id="product-fields" class="grid two" hidden>
+            <label>参考库存<input name="stock" type="number" min="0" max="100000" step="1" disabled placeholder="0–100000"></label>
+            <label>商品规格<textarea name="options" rows="2" maxlength="650" disabled placeholder="每行一项，最多 20 项"></textarea></label>
+          </div>
+          <label class="consent"><input name="consent" type="checkbox" required><span>我已核实资料，并取得商家同意，向主动联系的已登录用户提供此手机号。</span></label>
+          <p id="form-error" class="message error" role="alert" hidden></p>
+          <button id="add" class="primary full" type="submit">加入资料表 <span aria-hidden="true">＋</span></button>
+        </form>
+      </section>
+      <aside class="panel collection" aria-labelledby="collection-title">
+        <div class="panel-heading"><div><span class="step">02</span><h2 id="collection-title">待保存的资料</h2></div><span id="count" class="count">0 条</span></div>
+        <p class="hint collection-hint">可以继续添加其他商品和服务，也可以点开修改。</p>
+        <div id="empty" class="empty"><img src="/art/tomato.png" alt=""><h3>第一条资料，从这里开始</h3><p>左侧填写完成后，资料会显示在这里。</p></div>
+        <ul id="items" aria-label="商家资料列表"></ul>
+        <div class="save-area">
+          <p id="status" role="status">正在连接本机资料工具…</p>
+          <button type="button" class="primary full" id="save" disabled>保存到 E 盘</button>
+          <p id="save-result" class="message success" role="status" hidden></p>
+          <p class="save-note">保存位置：<span id="directory">E:\便民服务\私密配置\商家资料</span><br>保存后仍需核对并导入正式服务，才会在应用中展示。</p>
+        </div>
+      </aside>
+    </div>
+    <footer>邻里集 · 商家资料准备工具 <span>所有资料保存在本项目目录</span></footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+<defs>
+  <linearGradient id="green" x1="120" y1="0" x2="930" y2="1040" gradientUnits="userSpaceOnUse"><stop stop-color="#268765"/><stop offset=".58" stop-color="#166C55"/><stop offset="1" stop-color="#094D43"/></linearGradient>
+  <mask id="home-openings"><rect width="1024" height="1024" fill="white"/><rect x="364" y="491" width="66" height="66" rx="20" fill="black"/><rect x="594" y="491" width="66" height="66" rx="20" fill="black"/><path d="M438 802V648a74 74 0 0 1 148 0v154Z" fill="black"/></mask>
+</defs>
+<rect width="1024" height="1024" fill="url(#green)"/>
+<circle cx="75" cy="-48" r="672" fill="#C7E7A1" opacity=".035"/>
+<circle cx="1140" cy="1090" r="514" fill="#003F38" opacity=".11"/>
+<!-- mark:start -->
+<path d="m178 521 139-124a37 37 0 0 1 50 0l130 115v245H251a73 73 0 0 1-73-73Z" fill="#84C6A5" opacity=".65" mask="url(#home-openings)"/>
+<path d="M284 457 485 284a41 41 0 0 1 54 0l201 173a36 36 0 0 1 13 28v223a78 78 0 0 1-78 78H349a78 78 0 0 1-78-78V485a36 36 0 0 1 13-28Z" fill="#FFF8E6" mask="url(#home-openings)"/>
+<path d="M623 320c-13-78 30-130 102-128 14 72-26 121-102 128Z" fill="#C0DC86"/>
+<path d="m635 300 64-79" fill="none" stroke="#F0F3C7" stroke-width="9" stroke-linecap="round" opacity=".75"/>
+<circle cx="786" cy="299" r="41" fill="#F4C768"/>
+<!-- mark:end -->
+</svg>

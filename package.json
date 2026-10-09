@@ -1,0 +1,41 @@
+{
+  "name": "linliji",
+  "version": "0.3.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/client"
+  ],
+  "engines": {
+    "node": ">=24.0"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "server": "node server/index.mjs",
+    "quickstart": "node scripts/quickstart.mjs",
+    "build": "node scripts/build.mjs web",
+    "build:android-web": "node scripts/build.mjs android",
+    "build:wechat": "node scripts/build.mjs wechat",
+    "test": "node --test tests/*.test.mjs",
+    "test:platform-ui": "node tests/platform-ui.mjs",
+    "test:neighborhood-ui": "node tests/neighborhood-ui.mjs",
+    "test:android-ui": "node tests/android-server-ui.mjs",
+    "test:wechat": "node tests/release-wechat.mjs",
+    "operations": "node scripts/operations.mjs",
+    "catalog:drafts": "node scripts/catalog-drafts.mjs",
+    "assets": "node scripts/assets.mjs",
+    "assets:brand": "node scripts/brand-assets.mjs",
+    "format": "prettier --write \"server/*.mjs\" \"apps/client/src/**/*.{vue,js,json}\" \"apps/operations/*.{html,js,css}\" \"tests/*.{mjs,js}\""
+  },
+  "devDependencies": {
+    "@playwright/test": "1.58.2",
+    "@resvg/resvg-js": "2.6.2",
+    "prettier": "3.6.2"
+  },
+  "dependencies": {
+    "busboy": "1.6.0",
+    "sharp": "0.34.5"
+  },
+  "license": "MIT",
+  "description": "社区居民的闲置买卖、手艺互助与物品交换"
+}

@@ -1,0 +1,60 @@
+name: linliji
+services:
+  app:
+    image: linliji-runtime:0.3.0
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    restart: unless-stopped
+    env_file: runtime.env
+    environment:
+      TRUST_PROXY: "1"
+    volumes:
+      - app_data:/app/data
+      - app_backups:/app/backups
+    # Node is private. Only the TLS proxy below publishes host ports.
+    expose:
+      - "8787"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+  backup:
+    image: linliji-runtime:0.3.0
+    restart: unless-stopped
+    command: ["sh", "-c", "while true; do node scripts/backup.mjs; sleep 86400; done"]
+    volumes:
+      - app_data:/app/data:ro
+      - app_backups:/app/backups
+    healthcheck:
+      disable: true
+    depends_on:
+      app:
+        condition: service_healthy
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+  proxy:
+    image: caddy:2.10.2-alpine
+    restart: unless-stopped
+    env_file: runtime.env
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      app:
+        condition: service_healthy
+volumes:
+  app_data:
+  app_backups:
+  caddy_data:
+  caddy_config:

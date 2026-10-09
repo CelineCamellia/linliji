@@ -1,0 +1,53 @@
+{
+  "name": "邻里集",
+  "appid": "",
+  "description": "居民发布闲置、分享手艺、交换物品",
+  "versionName": "0.3.0",
+  "versionCode": "300",
+  "transformPx": false,
+  "app-plus": {
+    "usingComponents": true,
+    "nvueStyleCompiler": "uni-app",
+    "compilerVersion": 3,
+    "splashscreen": {
+      "alwaysShowBeforeRender": true,
+      "waiting": true,
+      "autoclose": true,
+      "delay": 0
+    },
+    "distribute": {
+      "android": {
+        "permissions": [
+          "<uses-permission android:name=\"android.permission.INTERNET\"/>",
+          "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>"
+        ]
+      },
+      "icons": {
+        "android": {
+          "hdpi": "static/app-icon.png",
+          "xhdpi": "static/app-icon.png",
+          "xxhdpi": "static/app-icon.png",
+          "xxxhdpi": "static/app-icon.png"
+        }
+      }
+    }
+  },
+  "mp-weixin": {
+    "appid": "",
+    "setting": {
+      "urlCheck": true,
+      "es6": true,
+      "minified": true
+    },
+    "usingComponents": true
+  },
+  "h5": {
+    "title": "邻里集",
+    "router": {
+      "mode": "hash"
+    }
+  },
+  "uniStatistics": {
+    "enable": false
+  }
+}

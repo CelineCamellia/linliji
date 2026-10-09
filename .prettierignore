@@ -1,0 +1,8 @@
+node_modules
+.cache
+.local
+dist
+artifacts
+apps/client/dist
+apps/android-release/build
+package-lock.json

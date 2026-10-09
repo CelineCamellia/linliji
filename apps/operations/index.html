@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>邻里集 · 管理页面</title>
+    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./"
+        ><img src="./icon.svg" alt="" /><span>邻里集<small>审核发布，跟进反馈。</small></span></a
+      ><span class="local-badge">发布管理</span
+      ><button id="admin-logout" class="secondary" hidden>退出管理</button>
+    </header>
+    <main>
+      <section class="intro">
+        <div>
+          <p class="eyebrow">从身边的社区开始</p>
+          <h1>把每一条信息，<br />认真交给邻里。</h1>
+          <p class="muted">审核邻居的手艺、闲置和交换信息，及时跟进反馈。</p>
+        </div>
+        <div class="intro-note">
+          <span>邻</span>
+          <p>先把社区服务做好<br />让信任一点点积累</p>
+        </div>
+      </section>
+      <p id="notice" class="notice" role="status" hidden></p>
+      <p id="error" class="error" role="alert" hidden></p>
+      <section class="stats" aria-label="当前运营概况">
+        <button data-go="listings">
+          <strong id="pending-count">—</strong><span>待审核发布</span></button
+        ><button data-go="available">
+          <strong id="available-count">—</strong><span>展示中的发布</span></button
+        ><button data-go="reports">
+          <strong id="reports-count">—</strong><span>待处理举报</span></button
+        ><button data-go="catalog">
+          <strong id="catalog-count">—</strong><span>商品与服务资料</span>
+        </button>
+      </section>
+      <section class="workspace">
+        <nav class="tabs" aria-label="管理功能">
+          <button data-tab="listings" class="active">发布审核</button
+          ><button data-tab="reports">举报处理</button
+          ><button data-tab="catalog">商家资料（备用）</button>
+        </nav>
+        <div class="toolbar">
+          <div>
+            <h2 id="section-title">发布审核</h2>
+            <p id="section-description" class="muted">认真核对描述和所在社区，再决定是否展示。</p>
+          </div>
+          <button id="refresh" class="secondary">刷新记录</button>
+        </div>
+        <div id="list-filter" class="filters">
+          <label
+            >发布类型<select id="listing-kind">
+              <option value="">全部类型</option>
+              <option value="sale">闲置买卖</option>
+              <option value="service">邻里手艺</option>
+              <option value="exchange">以物换物</option>
+            </select></label
+          ><label
+            >展示状态<select id="listing-status">
+              <option value="pending">待审核</option>
+              <option value="available">展示中</option>
+              <option value="rejected">未通过</option>
+              <option value="withdrawn">已下架</option>
+              <option value="reserved">已有预约</option>
+            </select></label
+          >
+        </div>
+        <div id="report-filter" class="filters" hidden>
+          <label
+            >处理状态<select id="report-status">
+              <option value="open">待处理</option>
+              <option value="closed">已处理</option>
+            </select></label
+          >
+        </div>
+        <section id="catalog-panel" hidden>
+          <div class="catalog-guide">
+            <p>先在资料工具填写真实商家信息，保存后在这里预览并导入。</p>
+            <a class="secondary" href="http://127.0.0.1:8791/" target="_blank" rel="noopener"
+              >打开商家资料工具 ↗</a
+            >
+          </div>
+          <label class="draft-label"
+            >选择已保存的资料<select id="draft-file">
+              <option value="">请选择资料文件</option>
+            </select></label
+          >
+          <div id="draft-summary" class="draft-summary" hidden></div>
+          <div id="draft-items" class="draft-grid"></div>
+          <button id="import-draft" class="primary" disabled>核对后导入资料</button>
+        </section>
+        <div id="records" class="records" aria-live="polite"></div>
+        <div id="empty" class="empty" hidden>
+          <span>邻</span>
+          <h3 id="empty-title">暂无待审核发布</h3>
+          <p id="empty-copy">居民发布信息后，会在这里等待审核。</p>
+        </div>
+        <div id="pagination" class="pagination" hidden>
+          <button id="previous" class="secondary">上一页</button><span id="page-info"></span
+          ><button id="next" class="secondary">下一页</button>
+        </div>
+      </section>
+      <footer>
+        <p>当前管理本机运营资料。部署在线服务后，需要连接实际使用的运营数据。</p>
+        <details>
+          <summary>查看数据位置</summary>
+          <p id="database" class="path"></p>
+        </details>
+      </footer>
+    </main>
+    <dialog id="decision-dialog" aria-labelledby="decision-title">
+      <form id="decision-form">
+        <h2 id="decision-title"></h2>
+        <p id="decision-target" class="target"></p>
+        <p id="decision-hint" class="muted"></p>
+        <label id="reason-field"
+          >处理说明<textarea
+            id="reason"
+            required
+            minlength="2"
+            maxlength="300"
+            rows="4"
+            placeholder="写清核对结果或处理原因，2–300 字"
+          ></textarea>
+        </label>
+        <p id="decision-error" class="error" role="alert" hidden></p>
+        <div class="dialog-actions">
+          <button type="button" id="cancel-decision" class="secondary">取消</button
+          ><button id="confirm-decision" class="primary" type="submit">确认</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="detail-dialog" aria-labelledby="detail-title">
+      <h2 id="detail-title">物品详情</h2>
+      <div id="detail-body"></div>
+      <button id="close-detail" class="secondary">关闭详情</button>
+    </dialog>
+  </body>
+</html>

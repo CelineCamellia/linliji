@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>邻里集 · 管理登录</title>
+    <link rel="stylesheet" href="/admin/style.css" />
+    <link rel="icon" href="/admin/icon.svg" />
+    <script src="/admin/login.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/"
+        ><img src="/admin/icon.svg" alt="" /><span>邻里集<small>社区发布管理</small></span></a
+      >
+    </header>
+    <main>
+      <section class="intro">
+        <div>
+          <p class="eyebrow">管理登录</p>
+          <h1>审核发布，跟进反馈。</h1>
+          <p class="muted">使用部署时设置的管理员账号。</p>
+        </div>
+      </section>
+      <section class="workspace">
+        <form id="login-form">
+          <label
+            >管理员账号<input
+              id="username"
+              autocomplete="username"
+              required
+              maxlength="32" /></label
+          ><label
+            >密码<input
+              id="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              maxlength="200"
+          /></label>
+          <p id="login-error" class="error" role="alert" hidden></p>
+          <button id="login-button" class="primary">登录管理页面</button>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>

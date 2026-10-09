@@ -1,0 +1,34 @@
+name: checks
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: .cache/playwright
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.18.0
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:platform-ui
+      - run: npm run test:neighborhood-ui
+      - run: npm run build:android-web
+      - run: npm run test:android-ui
+      - run: npm run build:wechat
+        env:
+          WX_APPID: wx0000000000000000
+          PUBLIC_ORIGIN: https://pilot.linliji.cn
+      - run: npm run test:wechat
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-results
+          path: artifacts/
